@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conference with Deepfake Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Video Conference with Deepfake Detection</h1>
+        </header>
+        <section class="video-section">
+            <h2>Video Stream</h2>
+            <div>
+                <img src="{{ url_for('video_feed') }}" alt="Video Stream" id="video">
+            </div>
+        </section>
+        <section class="chat-section">
+            <h2>Chat</h2>
+            <div id="chat-box" class="chat-box">
+                {% for msg in chat_history %}
+                    {% if msg.type == 'text' %}
+                        <div>{{ msg.content }}</div>
+                    {% elif msg.type == 'file' %}
+                        <div>
+                            <a href="{{ url_for('uploaded_file', filename=msg.content) }}" target="_blank">{{ msg.content }}</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <form id="chat-form" enctype="multipart/form-data" method="post">
+                <input type="text" id="message" name="message" placeholder="Type a message...">
+                <input type="file" id="file" name="file">
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
